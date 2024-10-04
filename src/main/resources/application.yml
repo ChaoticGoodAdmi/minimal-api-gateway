@@ -1,0 +1,29 @@
+server:
+  port: 8888
+
+spring:
+  application:
+    name: minimal-api-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: auth_register_route
+          uri: ${AUTH_SERVICE_URL}/api/v1/auth/register
+          predicates:
+            - Path=/api/v1/auth/register
+          filters:
+            - RegistrationFilter
+
+        - id: auth_login_route
+          uri: ${AUTH_SERVICE_URL}/api/v1/auth/login
+          predicates:
+            - Path=/api/v1/auth/login
+          filters:
+            - RewritePath=/api/v1/auth/login, /api/v1/auth/login
+
+        - id: user-service-route
+          uri: ${USER_SERVICE_URL}
+          predicates:
+            - Path=/api/v1/user/**
+          filters:
+            - UserRequestFilter

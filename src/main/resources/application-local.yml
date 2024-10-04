@@ -1,0 +1,25 @@
+server:
+  port: 8888
+
+spring:
+  application:
+    name: minimal-api-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: auth_service_route
+          uri: "http://localhost:8001"
+          predicates:
+            - Path=/api/v1/auth/**
+          filters:
+            - RewritePath=/api/v1/auth/(?<segment>.*), /api/v1/auth/${segment}
+
+        - id: user_service_route
+          uri: "http://localhost:8000"
+          predicates:
+            - Path=/api/v1/user/**
+          filters:
+            - RewritePath=/api/v1/user/(?<segment>.*), /api/v1/user/${segment}
+  gateway:
+    default-filters:
+      - TokenRelay
