@@ -21,6 +21,13 @@ spring:
           filters:
             - RewritePath=/api/v1/auth/login, /api/v1/auth/login
 
+        - id: auth_logout_route
+          uri: ${AUTH_SERVICE_URL}/api/v1/auth/logout
+          predicates:
+            - Path=/api/v1/auth/logout
+          filters:
+            - RewritePath=/api/v1/auth/logout, /api/v1/auth/logout
+
         - id: user-service-route
           uri: ${USER_SERVICE_URL}
           predicates:
